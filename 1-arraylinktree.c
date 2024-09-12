@@ -8,7 +8,7 @@ typedef struct TreeNode {
 
 void GenerateArrayTree(int* tree) {
     int list[15] = { 1, 2, 9, 3, 5, 10, 13, 4, 6, 7, 8, 11, 12, 14, 15 };
-    for (int i = 0; i < 156; i++) {
+    for (int i = 0; i < 15; i++) {
         tree[i] = list[i];
     }
 
