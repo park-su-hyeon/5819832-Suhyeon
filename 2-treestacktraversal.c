@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 typedef TreeNode* element;
@@ -7,9 +7,20 @@ typedef struct TreeNode {
 	struct TreeNode* left, * right;
 } TreeNode;
 
+typedef TreeNode* element;
+typedef struct StackNode {
+	element data;
+	struct StackNode* link;
+} StackNode;
+
+typedef struct {
+	StackNode* top;
+} LinkedStackType;
+
 int main() {
-	TreeNode* root = data;
+	TreeNode* root = (TreeNode*)malloc(sizeof(TreeNode));
 	root->data = 1;
+	root->left = root->right = NULL;
 
 	GenerateLinkTree(root);
 
@@ -17,6 +28,44 @@ int main() {
 
 	return 0;
 }
+void init(LinkedStackType* s)
+{
+	s->top = NULL;
+}
+
+int is_empty(LinkedStackType* s)
+{
+	return (s->top == NULL);
+}
+
+int is_full(LinkedStackType* s)
+{
+	return 0;
+}
+
+void push(LinkedStackType* s, element item)
+{
+	StackNode* temp = (StackNode*)malloc(sizeof(StackNode));
+	temp->data = item;
+	temp->link = s->top;
+	s->top = temp;
+}
+
+element pop(LinkedStackType* s) {
+	StackNode* temp = s->top;
+	element data = temp->data;
+	s->top = temp->link;
+	free(temp);
+	return data;
+}
+
+void print_stack(LinkedStackType* s)
+{
+	for (StackNode* p = s->top; p != NULL; p = p->link)
+		printf("%d->", p->data->data);  // implementation specific
+	printf("NULL \n");
+}
+
 
 void placeNode(TreeNode* node, int direction, int data) {
 	if (direction == 0) {  
@@ -55,6 +104,22 @@ void LinkOrders(TreeNode* root) {
 
 void LinkPreOrder(TreeNode* root) {
 	if (root == NULL) return;
+	LinkedStackType s;
+	TreeNode* nptr = root;
+
+	init(&s);
+
+	while (nptr != NULL || !is_empty(&s)) {
+		while (nptr != NULL) {
+			push(&s, nptr);
+			nptr = nptr->left;
+		}
+
+		nptr = pop(&s);
+		printf("[%2d]", nptr->data);
+
+		nptr = nptr->right;
+	}
 	printf("%d ", root->data);
 	LinkPreOrder(root->left);
 	LinkPreOrder(root->right);
