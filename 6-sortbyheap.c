@@ -29,24 +29,36 @@ void heapify(int arr[], int n, int i) {
     }
 }
 
-// 최대 힙을 생성하는 함수
-void BuildMaxHeap(int arr[], int n) {
-    // 마지막 비어있는 노드의 부모 노드부터 힙을 구성
-    for (int i = n / 2 - 1; i >= 0; i--)
-        heapify(arr, n, i);
+// 힙에 요소를 추가하는 함수
+void insert(int arr[], int* n, int key) {
+    // 힙 크기를 증가시킴
+    arr[*n] = key;
+    (*n)++;
+
+    // 추가한 요소가 힙 성질을 유지하도록 위로 이동
+    int i = *n - 1;
+    while (i != 0 && arr[(i - 1) / 2] < arr[i]) {
+        swap(&arr[i], &arr[(i - 1) / 2]);
+        i = (i - 1) / 2;
+    }
+
+    // 현재 힙 상태 출력
+    for (int j = 0; j < *n; j++) {
+        printf("%d ", arr[j]);
+    }
+    printf("\n");
 }
 
 // 힙 정렬 및 상태 출력을 위한 함수
-void BuildMaxHeapAndSort(int inputData[], int n) {
-    BuildMaxHeap(inputData, n);
+void BuildMaxHeapAndSort(int inputData[], int size) {
+    int n = 0; // 현재 힙 크기
 
-    // 힙 상태 출력
-    for (int i = 0; i < n; i++) {
-        printf("%d ", inputData[i]);
+    // 입력 데이터를 하나씩 추가하면서 힙을 구성
+    for (int i = 0; i < size; i++) {
+        insert(inputData, &n, inputData[i]);
     }
-    printf("\n");
 
-    // 하나씩 힙에서 루트(최대값)를 제거하고 정렬
+    // 힙을 정렬하는 단계
     for (int i = n - 1; i > 0; i--) {
         // 루트와 마지막 요소 교환
         swap(&inputData[0], &inputData[i]);
