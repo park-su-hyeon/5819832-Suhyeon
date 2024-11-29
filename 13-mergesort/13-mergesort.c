@@ -31,39 +31,38 @@ void printPartialArray(int array[], int size) {
     }
 
 void merge(int list[], int left, int mid, int right) {
-    int i = left, j = mid + 1, k = left;
+        int i = left, j = mid + 1, k = left;
 
-    
-    while (i <= mid && j <= right) {
-        comparisonCount++; // 비교 횟수 증가
-        if (list[i] <= list[j]) {
-            sorted[k++] = list[i++]; // 값 복사 후 이동
-            moveCount++; // 이동 횟수 증가
+        while (i <= mid && j <= right) {
+            comparisonCount++;
+            if (list[i] <= list[j]) {
+                sorted[k++] = list[i++];
+                moveCount++;
+            }
+            else {
+                sorted[k++] = list[j++];
+                moveCount++;
+            }
+        }
+
+        if (i > mid) {
+            for (int l = j; l <= right; l++) {
+                sorted[k++] = list[l];
+                moveCount++;
+            }
         }
         else {
-            sorted[k++] = list[j++]; // 값 복사 후 이동
-            moveCount++; // 이동 횟수 증가
+            for (int l = i; l <= mid; l++) {
+                sorted[k++] = list[l];
+                moveCount++;
+            }
+        }
+
+        for (int l = left; l <= right; l++) {
+            list[l] = sorted[l];
+            moveCount++;
         }
     }
-
-    
-    while (i <= mid) {
-        sorted[k++] = list[i++]; // 값 복사 후 이동
-        moveCount++; // 이동 횟수 증가
-    }
-
-
-    while (j <= right) {
-        sorted[k++] = list[j++]; // 값 복사 후 이동
-        moveCount++; // 이동 횟수 증가
-    }
-
-    
-    for (int l = left; l <= right; l++) {
-        list[l] = sorted[l]; // 값을 리스트로 복사
-        moveCount++; // 이동 횟수 증가
-    }
-}
 
 
 void doMergeSort(int list[], int left, int right) {
